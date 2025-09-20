@@ -1,41 +1,46 @@
 #include "rush.h"
 
-/* Entry:
- *  argv[1] must be a single quoted string of 4N integers in [1..N].
- *  On any error or no-solution, print "Error\n".
- *  On success, print the grid and newline per row.
- */
+static void	ft_init_grid(t_grid *grid)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < SIZE)
+	{
+		j = 0;
+		while (j < SIZE)
+		{
+			grid->cells[i][j] = 0;
+			j++;
+		}
+		grid->row_used[i] = 0;
+		grid->col_used[i] = 0;
+		i++;
+	}
+}
+
 int	main(int argc, char **argv)
 {
-	t_input in;
-	int   **grid;
+	t_input	input;
+	t_grid	grid;
 
 	if (argc != 2)
 	{
 		write(1, "Error\n", 6);
 		return (1);
 	}
-	if (!parse_input(argv[1], &in))
-		return (1); /* parse_input already printed Error */
-
-    if (!precheck_contradictions(&in))
-    {
-        write(1, "Error\n", 6);
-        free_input(&in);
-        return (1);
-    }
-
-	if (!solve_first_solution(&in, &grid))
+	if (!ft_parse_input(argv[1], &input))
 	{
 		write(1, "Error\n", 6);
-		free_input(&in);
 		return (1);
 	}
-	print_grid(grid, in.N);
-
-	/* cleanup */
-	for (int r = 0; r < in.N; ++r) free(grid[r]);
-	free(grid);
-	free_input(&in);
+	ft_init_grid(&grid);
+	if (!ft_solve_skyscraper(&input, &grid))
+	{
+		write(1, "Error\n", 6);
+		return (1);
+	}
+	ft_print_grid(&grid);
 	return (0);
 }

@@ -1,60 +1,40 @@
 #ifndef RUSH_H
 # define RUSH_H
 
-# include <unistd.h>
-# include <stdlib.h>
+# define SIZE 4
 
-/* ----- Core types ----- */
+int		write(int fd, const void *buf, unsigned long count);
+void	*malloc(unsigned long size);
+void	free(void *ptr);
 
-typedef struct s_input {
-	int N;        /* board size */
-	int *top;     /* size N */
-	int *bottom;  /* size N */
-	int *left;    /* size N */
-	int *right;   /* size N */
+typedef struct s_input
+{
+	int	clues[16];
 }	t_input;
 
-typedef struct s_state {
-	int N;
-	int **g;          /* grid[N][N] */
-	int *top;
-	int *bottom;
-	int *left;
-	int *right;
-	int row_used[9];  /* bitmask per row, N<=9 */
-	int col_used[9];  /* bitmask per col, N<=9 */
-}	t_state;
+typedef struct s_grid
+{
+	int	cells[4][4];
+	int	row_used[4];
+	int	col_used[4];
+}	t_grid;
 
-/* ----- Utils ----- */
-int		ft_is_space(char c);
-int		ft_is_digit(char c);
-int		ft_atoi_strict(const char *s, int *ok);
+int		ft_parse_input(char *str, t_input *input);
+int		ft_solve_skyscraper(t_input *input, t_grid *grid);
+int		ft_is_valid_placement(t_grid *grid, int row, int col, int val);
+void	ft_place_value(t_grid *grid, int row, int col, int val);
+void	ft_remove_value(t_grid *grid, int row, int col, int val);
+int		ft_check_visibility(t_grid *grid, t_input *input);
+int		ft_count_visible_left(int *row);
+int		ft_count_visible_right(int *row);
+int		ft_count_visible_top(t_grid *grid, int col);
+int		ft_count_visible_bottom(t_grid *grid, int col);
+void	ft_print_grid(t_grid *grid);
 void	ft_putchar(char c);
-void	ft_putstr(const char *s);
+void	ft_putstr(char *str);
 void	ft_putnbr(int n);
-char	**ft_split_spaces(const char *s, int *count);
-void	free_split(char **arr, int count);
-
-/* ----- Parser / IO ----- */
-int		parse_input(const char *arg, t_input *in); /* return 1 if ok, else 0 */
-void	free_input(t_input *in);
-void	print_grid(int **g, int N);
-
-/* ----- Fast contradiction precheck (optional but helpful) ----- */
-int		precheck_contradictions(const t_input *in);
-
-/* ----- Visibility ----- */
-int		count_visible_left(const int *line, int N);
-int		count_visible_right(const int *line, int N);
-int		row_done_ok(const int *row, int N, int left_req, int right_req);
-/* Column prefix feasibility (quick pruning) */
-int		col_prefix_feasible(int **g, int N, int filled_rows, int top_req, int col);
-/* Row prefix feasibility (left side) */
-int     row_prefix_feasible(const int *row, int N, int filled_cols, int left_req);
-/* Column final check when col is complete */
-int		col_final_ok(int **g, int N, int col, int top_req, int bottom_req);
-
-/* ----- Solver ----- */
-int		solve_first_solution(t_input *in, int ***out_grid);
+int		ft_atoi(char *str);
+int		ft_is_digit(char c);
+int		ft_is_space(char c);
 
 #endif
