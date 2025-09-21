@@ -21,10 +21,27 @@ static int	ft_count_numbers(char *str)
 	return (count);
 }
 
+static int	ft_parse_number(char *str, int *i, int *number)
+{
+	int	j;
+
+	j = 0;
+	*number = 0;
+	while (str[*i] && ft_is_digit(str[*i]))
+	{
+		if (j == 0)
+			*number = str[*i] - '0';
+		else
+			*number = *number * 10 + (str[*i] - '0');
+		j++;
+		(*i)++;
+	}
+	return (j > 0);
+}
+
 static int	ft_extract_numbers(char *str, int *numbers)
 {
 	int	i;
-	int	j;
 	int	num_idx;
 
 	i = 0;
@@ -35,17 +52,8 @@ static int	ft_extract_numbers(char *str, int *numbers)
 			i++;
 		if (str[i] && ft_is_digit(str[i]))
 		{
-			j = 0;
-			while (str[i] && ft_is_digit(str[i]))
-			{
-				if (j == 0)
-					numbers[num_idx] = str[i] - '0';
-				else
-					numbers[num_idx] = numbers[num_idx] * 10 + (str[i] - '0');
-				j++;
-				i++;
-			}
-			num_idx++;
+			if (ft_parse_number(str, &i, &numbers[num_idx]))
+				num_idx++;
 		}
 		else if (str[i])
 			i++;
