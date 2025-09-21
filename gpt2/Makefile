@@ -1,6 +1,6 @@
 NAME = rush-01
 
-SRCS = main.c parser.c utils.c vis.c solver.c output.c check.c
+SRCS = main.c parser.c utils.c vis.c solver.c output.c check.c string_utils.c
 
 OBJS = $(SRCS:.c=.o)
 

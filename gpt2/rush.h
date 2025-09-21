@@ -33,8 +33,11 @@ void	ft_print_grid(int *grid);
 void	ft_putchar(char c);
 void	ft_putstr(char *str);
 void	ft_putnbr(int n);
+
+/* String utility functions */
 int		ft_is_digit(char c);
 int		ft_is_space(char c);
+int		ft_count_numbers(char *str);
 
 /* Grid utility functions */
 void	ft_init_grid(int *grid);

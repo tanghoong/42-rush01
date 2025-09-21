@@ -5,7 +5,6 @@ int	ft_is_valid_placement(int *grid, int row, int col, int val)
 	int	i;
 	int	j;
 
-	/* Check row for duplicate */
 	i = 0;
 	while (i < SIZE)
 	{
@@ -13,7 +12,6 @@ int	ft_is_valid_placement(int *grid, int row, int col, int val)
 			return (0);
 		i++;
 	}
-	/* Check column for duplicate */
 	j = 0;
 	while (j < SIZE)
 	{
